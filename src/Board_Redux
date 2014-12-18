@@ -19,23 +19,25 @@
 var nQueensSolutions = function(n) {
   var board = [];
   var iters = Math.round(n/2);
-  // var currentRoiw = 0;
   var possibilities = 0;
-  // var currentRow = 0
-
-  // instantiate board with values of 0;
   for ( var i = 0; i < n; i++ ) {
     board.push([]);
-    // console.log(board);
     for ( var j = 0; j < n; j++ ) {
       board[i].push(0);
     }
   }
+
+  var traverseChoices = function(board, currentColumn, currentRow, center) {
+    console.log(currentColumn, currentRow);
     console.log(board);
-  // define recursive function
-  var track = function(board, currentColumn, currentRow, center) {
+    var newBoard = [];
     var leftOps = n - (Math.max(currentRow,currentColumn) + 1);
     var rightOps = (n - 1) - Math.max(Math.abs(0 - currentRow), Math.abs((n- 1) - currentColumn));
+
+    // creating deep copy
+    board.forEach(function(v,i){
+      newBoard.push(v.slice());
+    });
 
     // if we are on the last row increase our solutions
     if (currentRow === n - 1){
@@ -48,36 +50,40 @@ var nQueensSolutions = function(n) {
 
     // make columns invalid
     for(var i = (currentRow + 1) ; i < n; i++){
-      board[i][currentColumn] = 1;
+      newBoard[i][currentColumn] = 1;
     };
     // make left diagnols invalid
     for(var j = 0; j < leftOps; j++ ){
-      board[currentRow + 1 + j][currentColumn + 1 + j] = 1;
+      newBoard[currentRow + 1 + j][currentColumn + 1 + j] = 1;
     };
 
     // make right diagonals
     // = (n-1) - Math.max(abs(0-r2), abs((n-1)-c2))
     for (var k = 0; k < rightOps; k++){
-      board[currentRow + 1 + k][currentColumn - (1 + k)] = 1;
+      newBoard[currentRow + 1 + k][currentColumn - (1 + k)] = 1;
     };
 
+    // console.log(newBoard);
     // increase row by one
-    currentRow++;
-
-    for ( q = 0; q < n; q++ ) {
-      if ( board[currentRow][q] === 0 ) {
-        track( board, q, currentRow, center );
+    // currentRow++;
+    currentRow = currentRow + 1;
+    // console.log(currentRow);
+    for ( var q = 0; q < n; q++ ) {
+      // debugger;
+      // we need to return if the function doesn't find any values in the current row....
+      if ( newBoard[currentRow][q] === 0 ) {
+        traverseChoices( newBoard, q, currentRow, center );
       }
     }
   }
   // end of function
-
+  //  base case, iterating over first choices
   for (var k = 0; k < iters; k++ ) {
       if ( (k === (iters - 1)) && ((iters % 2) !== 0) ){
-        track(board, k , 0 , true);
+        traverseChoices(board, k , 0 , true);
       }
       else {
-        track(board, k, 0)
+        traverseChoices(board, k, 0)
       }
   };
 
