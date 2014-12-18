@@ -1,0 +1,64 @@
+
+// the board will take a parameter 'n'
+  // if parameter is not a number, parameter = object which represents the
+  // else board.remaining = {board state}
+
+// generate keys for a given board of size 'n'
+// make n*n x,y coordinates (row, column) as keys
+// give keys properties row, column
+// val total = 2(n-1), which is the number of diagonals
+// ----for left major diaganols -----
+// l: n - (row - column)
+//
+// ----- for right minor diagonals -------
+// r: row + column + 1
+
+
+// # of operations for calculating left major diagnols:
+  // = n - Math.max(r,c) + 1
+// # of operations for calculating right minor diaganols
+  // = (n-1) - Math.max(abs(0-r2), abs((n-1)-c2))
+
+
+var Board = function(n) {
+  var board = [];
+  var iters = Math.round(n/2);
+  var count = 0;
+  board.pos = 0;
+  board.currentRow = 0
+  for ( var i = 0; i < n; i++ ) {
+    board.push([]);
+    for ( var j = 0; j < n; j++ ) {
+      board[i].push(0);
+    }
+  }
+
+
+  // for ( var k = 0; k < iters; k++ ) {
+      //if not center value
+        //track(board, k, count)
+      //if center value
+        //track(board, k, count, opt);
+  // }
+
+  // var track = function(board, spot, count, opt) {
+    //if count === n
+        //2 * board.pos++
+        //if center === true
+          //board.pos--;
+
+
+    //for currect row 0 -> 1
+    //for current columb 0 ->
+    //for diagramLeft 0 -> 1
+    //for diagramRigth 0 ->1
+
+  //}
+  //board.currentRow++
+  //for spot in row[board.currentRow]
+    //if value == 0
+      //track(board, row(spot), count, opt)
+};
+
+
+
