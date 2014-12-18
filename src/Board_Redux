@@ -14,50 +14,74 @@
 // r: row + column + 1
 
 
-// # of operations for calculating left major diagnols:
-  // = n - Math.max(r,c) + 1
-// # of operations for calculating right minor diaganols
-  // = (n-1) - Math.max(abs(0-r2), abs((n-1)-c2))
 
 
-var Board = function(n) {
+var nQueensSolutions = function(n) {
   var board = [];
   var iters = Math.round(n/2);
-  var count = 0;
-  board.pos = 0;
-  board.currentRow = 0
+  // var currentRoiw = 0;
+  var possibilities = 0;
+  // var currentRow = 0
+
+  // instantiate board with values of 0;
   for ( var i = 0; i < n; i++ ) {
     board.push([]);
+    // console.log(board);
     for ( var j = 0; j < n; j++ ) {
       board[i].push(0);
     }
   }
+    console.log(board);
+  // define recursive function
+  var track = function(board, currentColumn, currentRow, center) {
+    var leftOps = n - (Math.max(currentRow,currentColumn) + 1);
+    var rightOps = (n - 1) - Math.max(Math.abs(0 - currentRow), Math.abs((n- 1) - currentColumn));
 
+    // if we are on the last row increase our solutions
+    if (currentRow === n - 1){
+      possibilities += 2;
+      if (center === true){
+        possibilities--;
+      };
+      return;
+    };
 
-  // for ( var k = 0; k < iters; k++ ) {
-      //if not center value
-        //track(board, k, count)
-      //if center value
-        //track(board, k, count, opt);
-  // }
+    // make columns invalid
+    for(var i = (currentRow + 1) ; i < n; i++){
+      board[i][currentColumn] = 1;
+    };
+    // make left diagnols invalid
+    for(var j = 0; j < leftOps; j++ ){
+      board[currentRow + 1 + j][currentColumn + 1 + j] = 1;
+    };
 
-  // var track = function(board, spot, count, opt) {
-    //if count === n
-        //2 * board.pos++
-        //if center === true
-          //board.pos--;
+    // make right diagonals
+    // = (n-1) - Math.max(abs(0-r2), abs((n-1)-c2))
+    for (var k = 0; k < rightOps; k++){
+      board[currentRow + 1 + k][currentColumn - (1 + k)] = 1;
+    };
 
+    // increase row by one
+    currentRow++;
 
-    //for currect row 0 -> 1
-    //for current columb 0 ->
-    //for diagramLeft 0 -> 1
-    //for diagramRigth 0 ->1
+    for ( q = 0; q < n; q++ ) {
+      if ( board[currentRow][q] === 0 ) {
+        track( board, q, currentRow, center );
+      }
+    }
+  }
+  // end of function
 
-  //}
-  //board.currentRow++
-  //for spot in row[board.currentRow]
-    //if value == 0
-      //track(board, row(spot), count, opt)
+  for (var k = 0; k < iters; k++ ) {
+      if ( (k === (iters - 1)) && ((iters % 2) !== 0) ){
+        track(board, k , 0 , true);
+      }
+      else {
+        track(board, k, 0)
+      }
+  };
+
+  return possibilities;
 };
 
 
