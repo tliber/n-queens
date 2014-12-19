@@ -1,4 +1,5 @@
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!WORKINIG POINT!!!!!!!!!!!!!!!!!!!!!!!!!d
 // the board will take a parameter 'n'
   // if parameter is not a number, parameter = object which represents the
   // else board.remaining = {board state}
@@ -20,11 +21,15 @@ var nQueensSolutions = function(n) {
   var board = [];
   var iters = Math.round(n/2);
   var possibilities = 0;
+  var rowObj = '0';
   for ( var i = 0; i < n; i++ ) {
     board.push([]);
-    for ( var j = 0; j < n; j++ ) {
-      board[i].push(0);
-    }
+  };
+  for ( var j = 0; j < n; j++ ) {
+    rowObj.concat('0');
+  }
+  for (var k = 0; k < n;k++){
+    board[j].push(rowObj);
   }
 
   var traverseChoices = function(board, currentColumn, currentRow, center) {
@@ -40,13 +45,19 @@ var nQueensSolutions = function(n) {
     });
 
     // if we are on the last row increase our solutions
+
+    //OLD LOGARITHM
+    // if (currentRow === n - 1){
+    //   possibilities += 2;
+    //   if (center === true){
+    //     possibilities--;
+    //   };
+    //   return;
+    // };
     if (currentRow === n - 1){
-      possibilities += 2;
-      if (center === true){
-        possibilities--;
-      };
+      possibilities += 1;
       return;
-    };
+    }
 
     // make columns invalid
     for(var i = (currentRow + 1) ; i < n; i++){
@@ -78,15 +89,19 @@ var nQueensSolutions = function(n) {
   }
   // end of function
   //  base case, iterating over first choices
-  for (var k = 0; k < iters; k++ ) {
-      if ( (k === (iters - 1)) && ((iters % 2) !== 0) ){
-        traverseChoices(board, k , 0 , true);
-      }
-      else {
-        traverseChoices(board, k, 0)
-      }
-  };
 
+  //OLD WAYS
+  // for (var k = 0; k < iters; k++ ) {
+      // if ( (k === (iters - 1)) && ((iters % 2) !== 0) ){
+        // traverseChoices(board, k , 0 , true);
+      // }
+      // else {
+        // traverseChoices(board, k, 0)
+      // }
+  // };
+  for(var k = 0; k < n; k++){
+    traverseChoices(board, k , 0);
+  }
   return possibilities;
 };
 
